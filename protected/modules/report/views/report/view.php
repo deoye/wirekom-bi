@@ -43,7 +43,7 @@ $this->widget('zii.widgets.CDetailView', array(
 
 <?php
 if ($model->bentuk_id == 1)
-    echo $this->renderPartial('_table', array('data' => $reader->readAll()));
+    echo $this->renderPartial('_table', array('data' => $reader));
 else if ($model->bentuk_id == 2)
-    echo $this->renderPartial('_grafik', array('data' => $reader->readAll(), 'title' => $model->name));
+    echo $this->renderPartial('_grafik', array('data' => $reader, 'title' => $model->name));
 ?>
