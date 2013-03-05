@@ -33,13 +33,18 @@ $this->widget('zii.widgets.CDetailView', array(
             'value' => nl2br($model->query)
         ),
         'target',
+        array(
+            'header' => 'Hasil',
+            'name' => 'hasil',
+            'type' => 'raw',
+            'value' => $model->getHasil()
+        ),
+        array(
+            'header' => 'Status',
+            'name' => 'status',
+            'type' => 'raw',
+            'value' => $model->getStatus()
+        ),
     ),
 ));
 ?>
-
-<pre>
-
-<?php
-    print_r($reader->readAll());
-?>
-</pre>

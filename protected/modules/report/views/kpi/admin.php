@@ -43,13 +43,25 @@ $('.search-form form').submit(function(){
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'kpi-grid',
     'dataProvider' => $model->search(),
-    'filter' => $model,
     'columns' => array(
-        'data_source_id',
         'name',
         'target',
+        array(
+            'header' => 'Jumlah',
+            'value' => '$data->getHasil()',
+            'type' => 'raw',
+        ),
+        array(
+            'header' => 'Status',
+            'value' => '$data->getStatus()',
+            'type' => 'raw',
+        ),
+        array(
+            'name' => 'user',
+            'value' => '$data->user->username',
+            'type' => 'raw',
+        ),
         'advice',
-        'user_id',
         array(
             'class' => 'CButtonColumn',
         ),

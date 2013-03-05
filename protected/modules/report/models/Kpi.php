@@ -121,5 +121,16 @@ class Kpi extends CActiveRecord {
     public function getDataSourceOptions() {
         return CHtml::listData(DataSource::model()->findAll(), 'id', 'dbname');
     }
+    
+    public function getHasil() {        
+        $dbCon = new CDbConnection($this->dataSource->getDsn(), $this->dataSource->username, $this->dataSource->password);
+        $dbCon->active = true;
 
+        return $dbCon->createCommand($this->query)->queryScalar();
+    }
+    
+    public function getStatus() {        
+        return ($this->getHasil() >= $this->target) ? 'Terpenuhi' : 'Tidak Terpenuhi';
+    }
+    
 }

@@ -49,7 +49,6 @@ class KpiController extends Controller {
     public function actionView($id) {
         $this->render('view', array(
             'model' => $this->loadModel($id),
-            'reader' => $this->executeQuery($id),
         ));
     }
 
@@ -160,104 +159,6 @@ class KpiController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
-    }
-
-    protected function executeQuery($id) {
-        $kpi = $this->loadModel($id);
-        $dbCon = new CDbConnection($kpi->dataSource->getDsn(), $kpi->dataSource->username, $kpi->dataSource->password);
-        $dbCon->active = true;
-
-        return $dbCon->createCommand($kpi->query)->query();
-    }
-
-    public function actionExportPdf($id) {
-        spl_autoload_unregister(array('YiiBase', 'autoload'));
-        Yii::import('application.vendors.PHPExcel.PHPExcel', true);
-        spl_autoload_register(array('YiiBase', 'autoload'));
-
-        $objPHPExcel = new PHPExcel();
-        $objPHPExcel->getProperties()->setCreator("Widodo Pangestu")
-                ->setLastModifiedBy("Widodo Pangestu")
-                ->setTitle("PDF Test Document")
-                ->setSubject("PDF Test Document")
-                ->setDescription("Test document for PDF, generated using PHP classes.")
-                ->setKeywords("pdf php")
-                ->setCategory("Test result file");
-
-        $reader = $this->executeQuery($id);
-        $no = '1';
-        foreach ($reader as $row) {
-            $char = 'A';
-            foreach ($row as $key => $value) {
-                $objPHPExcel->setActiveSheetIndex(0)->getCell("$char$no")->setValue($value);
-                $objPHPExcel->setActiveSheetIndex(0)->getStyle("$char$no")->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-                $char++;
-            }
-            $no++;
-        }
-
-        $objPHPExcel->getActiveSheet()->setTitle('Report App');
-        $objPHPExcel->getActiveSheet()->setShowGridLines(false);
-
-        $objPHPExcel->setActiveSheetIndex(0);
-
-
-        if (!PHPExcel_Settings::setPdfRenderer(
-                        PHPExcel_Settings::PDF_RENDERER_MPDF, Yii::getPathOfAlias('application.vendors.mpdf')
-        )) {
-            die(
-                    'NOTICE: Please set the $rendererName and $rendererLibraryPath values' .
-                    '<br />' .
-                    'at the top of this script as appropriate for your directory structure'
-            );
-        }
-
-
-// Redirect output to a client鈥檚 web browser (PDF)
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment;filename="kpi_app.pdf"');
-        header('Cache-Control: max-age=0');
-
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
-        $objWriter->save('php://output');
-        exit;
-    }
-
-    public function actionExportXls($id) {
-        spl_autoload_unregister(array('YiiBase', 'autoload'));
-        Yii::import('application.vendors.PHPExcel.PHPExcel', true);
-        spl_autoload_register(array('YiiBase', 'autoload'));
-        $objPHPExcel = new PHPExcel();
-        $objPHPExcel->getProperties()->setCreator("Widodo Pangestu")
-                ->setLastModifiedBy("Widodo Pangestu")
-                ->setTitle("PDF Test Document")
-                ->setSubject("PDF Test Document")
-                ->setDescription("Test document for PDF, generated using PHP classes.")
-                ->setKeywords("pdf php")
-                ->setCategory("Test result file");
-
-        $reader = $this->executeQuery($id);
-        $no = '1';
-        foreach ($reader as $row) {
-            $char = 'A';
-            foreach ($row as $key => $value) {
-                $objPHPExcel->setActiveSheetIndex(0)->getCell("$char$no")->setValue($value);
-                $objPHPExcel->setActiveSheetIndex(0)->getStyle("$char$no")->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-                $char++;
-            }
-            $no++;
-        }
-
-        $objPHPExcel->getActiveSheet()->setTitle('Report App');
-        $objPHPExcel->setActiveSheetIndex(0);
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="kpi_app.xls"');
-        header('Cache-Control: max-age=0');
-
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        $objWriter->save('php://output');
-        exit;
     }
 
 }
