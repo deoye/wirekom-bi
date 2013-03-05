@@ -1,3 +1,7 @@
-assets/
-protected/runtime/
-themes/classic/views/
+/nbproject/
+/assets/
+/protected/runtime/
+/index.php
+/index-test.php
+/uploads/
+/protected/config/
