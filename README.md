@@ -6,4 +6,7 @@ todo join query builder
 
 released under MIT license
 
+
+if any feedback, just let us know, by sending email to kontak@wirekom.co.id
+
 yii php business intelligence
