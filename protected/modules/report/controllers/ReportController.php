@@ -33,7 +33,7 @@ class ReportController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $this->layout = '/layouts/column2';
+        $this->layout = '/layouts/column1';
         $model = new Report;
 
         // Uncomment the following line if AJAX validation is needed
@@ -41,7 +41,7 @@ class ReportController extends Controller {
 
         if (isset($_POST['Report'])) {
             $model->attributes = $_POST['Report'];
-            if ($model->save())
+//            if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
@@ -56,6 +56,7 @@ class ReportController extends Controller {
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate($id) {
+        $this->layout = '/layouts/column1';
         $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
