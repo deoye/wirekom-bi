@@ -45,8 +45,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'filter' => $model,
     'columns' => array(
         'name',
-        'bentuk_id',
-        'data_source_id',
+        array(
+            'name' => 'data_source_id',
+            'value' => '$data->dataSource->getDsn()',
+            'type' => 'raw',
+        ),
+        array(
+            'name' => 'bentuk',
+            'value' => '$data->bentuk->name',
+            'type' => 'raw',
+        ),
         array(
             'class' => 'CButtonColumn',
         ),
