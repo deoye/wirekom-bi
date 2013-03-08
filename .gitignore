@@ -1,5 +1,8 @@
 /nbproject/
 /index.php
 /index-test.php
+/uploads/
+/assets/
+/protected/runtime/
 /.htaccess
 *~

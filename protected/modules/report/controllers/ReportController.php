@@ -37,11 +37,12 @@ class ReportController extends Controller {
         $model = new Report;
 
         // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+        $this->performAjaxValidation($model);
 
         if (isset($_POST['Report'])) {
             $model->attributes = $_POST['Report'];
-//            if ($model->save())
+            $model->parameter = json_encode($_POST['param']);
+            if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
@@ -64,6 +65,7 @@ class ReportController extends Controller {
 
         if (isset($_POST['Report'])) {
             $model->attributes = $_POST['Report'];
+            $model->parameter = json_encode($_POST['param']);
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }

@@ -43,13 +43,13 @@ class Report extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('bentuk_id, data_source_id', 'required'),
+            array('parameter, bentuk_id, data_source_id', 'required'),
             array('bentuk_id, data_source_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 255),
             array('description, query, created, updated', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, name, description, query, created, updated, bentuk_id, data_source_id', 'safe', 'on' => 'search'),
+            array('id, name, description, query, parameter, created, updated, bentuk_id, data_source_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -75,6 +75,7 @@ class Report extends CActiveRecord {
             'name' => 'Name',
             'description' => 'Description',
             'query' => 'Query',
+            'parameter' => 'Parameter',
             'created' => 'Created',
             'updated' => 'Updated',
             'bentuk_id' => 'Bentuk',
@@ -96,6 +97,7 @@ class Report extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
         $criteria->compare('description', $this->description, true);
         $criteria->compare('query', $this->query, true);
+        $criteria->compare('parameter', $this->parameter, true);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('updated', $this->updated, true);
         $criteria->compare('bentuk_id', $this->bentuk_id);
