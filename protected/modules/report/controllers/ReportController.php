@@ -23,14 +23,20 @@ class ReportController extends Controller {
      */
     public function actionView($id) {
         $params = null;
+        $model = $this->loadModel($id);
         $data = array(
-            'model' => $this->loadModel($id),
+            'model' => $model,
             'params' => $params,
             'reader' => null,
         );
-        if (isset($_POST['params'])) {
-            $params = $_POST['params'];
-            $data['reader'] = $this->executeQuery($id, $params);
+
+        if (empty($model->parameter)) {
+            $data['reader'] = $this->executeQuery($id);
+        } else {
+            if (isset($_POST['params'])) {
+                $params = $_POST['params'];
+                $data['reader'] = $this->executeQuery($id, $params);
+            }
         }
         $this->render('view', $data);
     }
@@ -48,8 +54,12 @@ class ReportController extends Controller {
 
         if (isset($_POST['Report'])) {
             $model->attributes = $_POST['Report'];
-            if (isset($_POST['param']))
-                $model->parameter = json_encode($_POST['param']);
+            if (isset($_POST['param'])) {
+                $tmp = array();
+                foreach ($_POST['param'] as $val)
+                    $tmp[] = $val;
+                $model->parameter = json_encode($tmp);
+            }
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -73,8 +83,12 @@ class ReportController extends Controller {
 
         if (isset($_POST['Report'])) {
             $model->attributes = $_POST['Report'];
-            if (isset($_POST['param']))
-                $model->parameter = json_encode($_POST['param']);
+            if (isset($_POST['param'])) {
+                $tmp = array();
+                foreach ($_POST['param'] as $val)
+                    $tmp[] = $val;
+                $model->parameter = json_encode($tmp);
+            }
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }

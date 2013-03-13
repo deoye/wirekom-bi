@@ -70,31 +70,49 @@
         
         
             
-        function addParam(i, param){                
+        function addParam(i, param){            
+            var labelParam = $('<label for="param-' + i + '">Parameter ' + i + '</label>');
+            var deleteParam = $('<a id="parameter-delete" style="float: right;color:red;">Delete</a>');
             var paramName = $('<input type="text" id="parameter-name" name="param[' + i + '][name]" size="30" placeholder="Parameter Name" />');
             var paramLabel = $('<input type="text" id="parameter-label" name="param[' + i + '][label]" size="30" placeholder="Parameter Label" />');
             var paramType = $('<select id="parameter-type" name="param[' + i + '][type]"><option value="0">Select Type Parameter</option><option value="1">Text</option><option value="2">Date</option><option value="3">Select</option></select>');
-            var paramSql = $('<textarea name="param[' + i + '][sql]" rows="4" cols="28">Fill SQL for option</textarea>');
+            var paramSql = $('<textarea id="parameter-sql" name="param[' + i + '][sql]" rows="4" cols="28">Fill SQL for option</textarea>');
             var fieldWrapper = $('<div id="' + i + '" class="row"></div>');
           
             if(typeof(param)!=='undefined'){
                 paramName.attr('value', param.name);
                 paramLabel.attr('value', param.label);
                 paramType.attr('value', param.type);
+                labelParam.text('Parameter : ' + param.name);
             }
-            fieldWrapper.append('<label for="param-' + i + '">Parameter ' + i + '</label>');
+            labelParam.append(deleteParam);
+            fieldWrapper.append(labelParam);
             fieldWrapper.append(paramName);
             fieldWrapper.append(paramLabel);
             fieldWrapper.append(paramType);
+            fieldWrapper.append(paramSql);
+            
+            paramSql.hide();
             
             if(paramType.attr('value') == '3'){
-                fieldWrapper.append(paramSql);
-            }
+                paramSql.show();
+            } 
             
             paramType.change(function(){
-                paramSql.remove();
                 if($(this).val() == '3') 
-                    fieldWrapper.append(paramSql);
+                    paramSql.show();
+                else                    
+                    paramSql.hide();
+            });
+            
+            paramName.change(function(){                
+                labelParam.text('Parameter : ' + $(this).val());
+            });
+            
+            deleteParam.click(function(){
+                fieldWrapper.hide('slow', function(){ 
+                    fieldWrapper.remove(); 
+                });
             });
             paramName.focus();
             return fieldWrapper;
