@@ -43,7 +43,7 @@ class Report extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('parameter, bentuk_id, data_source_id', 'required'),
+            array('bentuk_id, data_source_id', 'required'),
             array('bentuk_id, data_source_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 255),
             array('description, query, created, updated', 'safe'),

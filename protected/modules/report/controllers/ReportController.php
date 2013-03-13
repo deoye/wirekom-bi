@@ -22,9 +22,13 @@ class ReportController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
+        $params = null;
+        if (isset($_POST['params']))
+            $params = $_POST['params'];
         $this->render('view', array(
             'model' => $this->loadModel($id),
-            'reader' => $this->executeQuery($id),
+            'reader' => $this->executeQuery($id, $params),
+            'params' => $params,
         ));
     }
 
@@ -41,7 +45,8 @@ class ReportController extends Controller {
 
         if (isset($_POST['Report'])) {
             $model->attributes = $_POST['Report'];
-            $model->parameter = json_encode($_POST['param']);
+            if (isset($_POST['param']))
+                $model->parameter = json_encode($_POST['param']);
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -65,7 +70,8 @@ class ReportController extends Controller {
 
         if (isset($_POST['Report'])) {
             $model->attributes = $_POST['Report'];
-            $model->parameter = json_encode($_POST['param']);
+            if (isset($_POST['param']))
+                $model->parameter = json_encode($_POST['param']);
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -140,10 +146,18 @@ class ReportController extends Controller {
         }
     }
 
-    protected function executeQuery($id) {
+    protected function executeQuery($id, $params = null) {
         $report = $this->loadModel($id);
         $dbCon = new CDbConnection($report->dataSource->getDsn(), $report->dataSource->username, $report->dataSource->password);
         $dbCon->active = true;
+        if ($params !== null)
+            foreach ($params as $key => $val) {
+            ///$P{test}
+            
+            
+                $report->query = str_replace($key, $val, $report->query);
+            }
+
 
         return $dbCon->createCommand($report->query)->queryAll();
     }
