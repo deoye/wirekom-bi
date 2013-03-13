@@ -180,6 +180,27 @@ class ReportController extends Controller {
         return $dbCon->createCommand($report->query)->queryAll();
     }
 
+    public function actionEmbed($id) {
+        $this->layout = '/layouts/embed';
+        $params = null;
+        $model = $this->loadModel($id);
+        $data = array(
+            'model' => $model,
+            'params' => $params,
+            'reader' => null,
+        );
+
+        if (empty($model->parameter)) {
+            $data['reader'] = $this->executeQuery($id);
+        } else {
+            if (isset($_POST['params'])) {
+                $params = $_POST['params'];
+                $data['reader'] = $this->executeQuery($id, $params);
+            }
+        }
+        $this->render('embed', $data);
+    }
+
     public function actionExportPdf($id) {
         spl_autoload_unregister(array('YiiBase', 'autoload'));
         Yii::import('application.vendors.PHPExcel.PHPExcel', true);

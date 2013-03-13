@@ -22,7 +22,10 @@ body
     color:#FFFF;
     text-align:right;
 }
-
+.embed
+{
+    padding: 15px;
+}
 .topnav_text a
 {
     color: #FFFFFF!important;

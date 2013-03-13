@@ -51,8 +51,3 @@ if ($reader !== null) {
         echo $this->renderPartial('_grafik', array('data' => $reader, 'title' => $model->name));
 }
 ?>
-<pre>
-    <?php
-    print_r($params);
-    ?>
-</pre>
