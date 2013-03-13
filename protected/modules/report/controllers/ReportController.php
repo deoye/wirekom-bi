@@ -23,13 +23,16 @@ class ReportController extends Controller {
      */
     public function actionView($id) {
         $params = null;
-        if (isset($_POST['params']))
-            $params = $_POST['params'];
-        $this->render('view', array(
+        $data = array(
             'model' => $this->loadModel($id),
-            'reader' => $this->executeQuery($id, $params),
             'params' => $params,
-        ));
+            'reader' => null,
+        );
+        if (isset($_POST['params'])) {
+            $params = $_POST['params'];
+            $data['reader'] = $this->executeQuery($id, $params);
+        }
+        $this->render('view', $data);
     }
 
     /**
@@ -152,10 +155,11 @@ class ReportController extends Controller {
         $dbCon->active = true;
         if ($params !== null)
             foreach ($params as $key => $val) {
-            ///$P{test}
-            
-            
-                $report->query = str_replace($key, $val, $report->query);
+                $var = '$P{var}';
+                $tmp = str_replace('var', $key, $var);
+
+
+                $report->query = str_replace($tmp, $val, $report->query);
             }
 
 

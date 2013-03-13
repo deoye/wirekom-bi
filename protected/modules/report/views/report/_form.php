@@ -74,6 +74,7 @@
             var paramName = $('<input type="text" id="parameter-name" name="param[' + i + '][name]" size="30" placeholder="Parameter Name" />');
             var paramLabel = $('<input type="text" id="parameter-label" name="param[' + i + '][label]" size="30" placeholder="Parameter Label" />');
             var paramType = $('<select id="parameter-type" name="param[' + i + '][type]"><option value="0">Select Type Parameter</option><option value="1">Text</option><option value="2">Date</option><option value="3">Select</option></select>');
+            var paramSql = $('<textarea name="param[' + i + '][sql]" rows="4" cols="28">Fill SQL for option</textarea>');
             var fieldWrapper = $('<div id="' + i + '" class="row"></div>');
           
             if(typeof(param)!=='undefined'){
@@ -85,17 +86,15 @@
             fieldWrapper.append(paramName);
             fieldWrapper.append(paramLabel);
             fieldWrapper.append(paramType);
-                
-            var input = null;
+            
+            if(paramType.attr('value') == '3'){
+                fieldWrapper.append(paramSql);
+            }
+            
             paramType.change(function(){
-                if(input != null){
-                    input.remove();
-                    input = null;                    
-                }
-                var n = $(this).val();
-                if(n == '3') input = $('<textarea name="param[' + $(this).parent().attr('id') + '][sql]" rows="4" cols="28">Fill SQL for option</textarea>');
-                
-                fieldWrapper.append(input);
+                paramSql.remove();
+                if($(this).val() == '3') 
+                    fieldWrapper.append(paramSql);
             });
             paramName.focus();
             return fieldWrapper;
