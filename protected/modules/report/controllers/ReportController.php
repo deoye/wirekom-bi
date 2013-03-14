@@ -22,11 +22,9 @@ class ReportController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
-        $params = null;
         $model = $this->loadModel($id);
         $data = array(
             'model' => $model,
-            'params' => $params,
             'reader' => null,
         );
 
@@ -165,17 +163,14 @@ class ReportController extends Controller {
 
     protected function executeQuery($id, $params = null) {
         $report = $this->loadModel($id);
-        $dbCon = new CDbConnection($report->dataSource->getDsn(), $report->dataSource->username, $report->dataSource->password);
-        $dbCon->active = true;
+        $dbCon = $report->getDbConn();
+
         if ($params !== null)
             foreach ($params as $key => $val) {
                 $var = '$P{var}';
                 $tmp = str_replace('var', $key, $var);
-
-
                 $report->query = str_replace($tmp, $val, $report->query);
             }
-
 
         return $dbCon->createCommand($report->query)->queryAll();
     }

@@ -43,7 +43,7 @@ $this->widget('zii.widgets.CDetailView', array(
 
 <?php
 if ($model->parameter !== null)
-    echo $this->renderPartial('_param', array('parameter' => json_decode($model->parameter)));
+    echo $this->renderPartial('_param', array('parameter' => json_decode($model->parameter), 'dbConn' => $model->getDbConn()));
 if ($reader !== null) {
     if ($model->bentuk_id == 1)
         echo $this->renderPartial('_table', array('data' => $reader));

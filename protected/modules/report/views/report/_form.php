@@ -83,6 +83,7 @@
                 paramName.attr('value', param.name);
                 paramLabel.attr('value', param.label);
                 paramType.attr('value', param.type);
+                paramSql.attr('value', param.sql);
                 labelParam.text('Parameter : ' + param.name);
             }
             labelParam.append(deleteParam);

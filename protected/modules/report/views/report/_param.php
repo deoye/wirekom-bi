@@ -24,6 +24,16 @@
                     ?>(yyyy-mm-dd)
                 <?php elseif ($val->type == 3) : ?>
                     <select id="param-<?php echo $val->name; ?>" name="params[<?php echo $val->name; ?>]">
+                        <?php
+                        $data = $dbConn->createCommand($val->sql)->queryAll();
+                        foreach ($data as $option) {
+                            reset($option);
+                            echo '<option value="'.current($option).'">';
+                            end($option);
+                            echo current($option).'</option>'; //the last one
+//                            print_r($option);
+                        }
+                        ?>
                     </select>
                 <?php endif; ?>
             </div>

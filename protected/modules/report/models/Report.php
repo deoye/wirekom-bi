@@ -119,6 +119,12 @@ class Report extends CActiveRecord {
         );
     }
 
+    public function getDbConn() {
+        $dbCon = new CDbConnection($this->dataSource->getDsn(), $this->dataSource->username, $this->dataSource->password);
+        $dbCon->active = true;
+        return $dbCon;
+    }
+
     public function getDataSourceOptions() {
         return CHtml::listData(DataSource::model()->findAll(), 'id', 'dbname');
     }
