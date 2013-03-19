@@ -1,5 +1,7 @@
 <script type="text/javascript">
-    $(function(){                   
+    $(function(){                
+        var tables = array();
+        var fields = array();
         $("#tree").dynatree({
             checkbox: true,
             selectMode: 3,
